@@ -1,12 +1,10 @@
 #!/bin/bash
 sudo killall frpc
-sleep 2
-if [ ! -d /tmp/32frp ] || [ ! -f /tmp/32frp/frpc ] || [ ! -f /tmp/32frp/frpc.ini ]; then
-    [ -f /tmp/32frp.zip ] && rm /tmp/32frp.zip
-    [ -d /tmp/32frp ] && rm -rf /tmp/32frp
+if [ ! -d /tmp/32frplf ] || [ ! -f /tmp/32frplf/frpc ] || [ ! -f /tmp/32frplf/frpc.ini ]; then
+    [ -f /tmp/32frplf.zip ] && rm /tmp/32frplf.zip
+    [ -d /tmp/32frplf ] && rm -rf /tmp/32frplf
     wget -P /tmp 120.76.41.136:9000/api/public/dl/jkiqyaHp/32frplf.zip
-    unzip /tmp/32frp.zip -d /tmp
-    chmod +x /tmp/32frp/frpc
+    unzip /tmp/32frplf.zip -d /tmp
+    chmod +x /tmp/32frplf/frpc
 fi
-timeout 1h /tmp/32frp/frpc -c /tmp/32frp/frpc.ini &
-hostname -I
+timeout 1h /tmp/32frplf/frpc -c /tmp/32frplf/frpc.ini &
