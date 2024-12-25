@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>书签管理网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-container {
+            margin-bottom: 20px;
+        }
+        .input-container input {
+            padding: 10px;
+            width: calc(100% - 120px);
+            margin-right: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .input-container button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-container button:hover {
+            background-color: #0056b3;
+        }
+        .bookmark-list {
+            list-style: none;
+            padding: 0;
+        }
+        .bookmark-list li {
+            background-color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .bookmark-list a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .bookmark-list a:hover {
+            text-decoration: underline;
+        }
+        .remove-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>我的书签网站</h1>
+</header>
+
+<div class="container">
+    <div class="input-container">
+        <input type="text" id="bookmarkName" placeholder="输入书签名称">
+        <input type="text" id="bookmarkURL" placeholder="输入书签网址">
+        <button onclick="addBookmark()">添加书签</button>
+    </div>
+
+    <ul id="bookmarkList" class="bookmark-list">
+        <!-- 已保存的书签将显示在这里 -->
+    </ul>
+</div>
+
+<footer>
+    <p>&copy; 2024 我的书签网站</p>
+</footer>
+
+<script>
+    // 获取保存的书签列表
+    let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+
+    // 渲染书签列表
+    function renderBookmarks() {
+        const bookmarkList = document.getElementById('bookmarkList');
+        bookmarkList.innerHTML = '';  // 清空列表
+        
+        bookmarks.forEach((bookmark, index) => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <a href="${bookmark.url}" target="_blank">${bookmark.name}</a>
+                <button class="remove-btn" onclick="removeBookmark(${index})">删除</button>
+            `;
+            bookmarkList.appendChild(listItem);
+        });
+    }
+
+    // 添加书签
+    function addBookmark() {
+        const name = document.getElementById('bookmarkName').value;
+        const url = document.getElementById('bookmarkURL').value;
+
+        if (name && url) {
+            const newBookmark = { name, url };
+            bookmarks.push(newBookmark);
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+
+            document.getElementById('bookmarkName').value = '';
+            document.getElementById('bookmarkURL').value = '';
+            renderBookmarks();
+        } else {
+            alert('请填写书签名称和网址');
+        }
+    }
+
+    // 删除书签
+    function removeBookmark(index) {
+        bookmarks.splice(index, 1);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        renderBookmarks();
+    }
+
+    // 初始化渲染书签列表
+    renderBookmarks();
+</script>
+
+</body>
+</html>
