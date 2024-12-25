@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码和条形码</title>
+    <!-- 引用QRCode.js库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- 引用JsBarcode库 -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .input-container {
+            margin-top: 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+            resize: both;  /* 允许用户调整大小 */
+            overflow: auto;  /* 在调整大小时显示滚动条 */
+            box-sizing: border-box; /* 包括内边距在内计算宽度 */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output-container {
+            margin-top: 20px;
+        }
+        .output-container h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        #qrcode, #barcode {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-container">
+        <!-- 使用textarea代替input，支持换行和调整大小 -->
+        <textarea id="inputText" placeholder="输入内容生成二维码和条形码"></textarea>
+        <button onclick="generateQRCode()">生成二维码</button>
+        <button onclick="generateBarcode()">生成条形码</button>
+    </div>
+
+    <div class="output-container">
+        <h3>二维码：</h3>
+        <div id="qrcode"></div>
+
+        <h3>条形码：</h3>
+        <svg id="barcode"></svg>
+    </div>
+</div>
+
+<script>
+    // 生成二维码的函数
+    function generateQRCode() {
+        const inputText = document.getElementById('inputText').value;
+        const qrContainer = document.getElementById('qrcode');
+        qrContainer.innerHTML = "";  // 清空当前的二维码
+        
+        if (inputText) {
+            // 创建并生成二维码
+            new QRCode(qrContainer, {
+                text: inputText,
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        } else {
+            alert('请输入内容生成二维码！');
+        }
+    }
+
+    // 生成条形码的函数
+    function generateBarcode() {
+        const inputText = document.getElementById('inputText').value;
+        const barcodeContainer = document.getElementById('barcode');
+        
+        if (inputText) {
+            // 清空当前的条形码
+            JsBarcode(barcodeContainer, inputText, {
+                format: "CODE128",
+                width: 2,
+                height: 100,
+                displayValue: true
+            });
+        } else {
+            alert('请输入内容生成条形码！');
+        }
+    }
+</script>
+
+</body>
+</html>
